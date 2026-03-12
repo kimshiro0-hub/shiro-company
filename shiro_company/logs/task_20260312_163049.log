@@ -1,0 +1,172 @@
+
+============================================================
+  실시간 대화 로그
+============================================================
+
+  [16:31:01] [소라]
+     [FILE:todo_app.py]
+     
+     안녕하세요 테오님! 투두 리스트 애플리케이션을 개발해주세요.
+     
+     **파일명**: `todo_app.py`
+     
+     **구현할 클래스**: `TodoList`
+     
+     **주요 메서드**:
+     - `add_task(task)`: 할 일 추가
+     - `remove_task(index)`: 인덱스로 할 일 삭제  
+     - `complete_task(index)`: 할 일 완료 처리
+     - `get_tasks()`: 전체 할 일 목록 반환
+     - `get_pending_tasks()`: 미완료 할 일만 반환
+     - `get_completed_tasks()`: 완료된 할 일만 반환
+     - `get_encouragement()`: 응원 메시지 반환
+     
+     **통과해야 할 테스트**:
+     
+     ```test
+     import pytest
+     from todo_app import TodoList
+     
+     def test_add_task():
+         todo = TodoList()
+         todo.add_task("코딩 공부하기")
+         tasks = todo.get_tasks()
+         assert len(tasks) == 1
+         assert tasks[0]['task'] == "코딩 공부하기"
+         assert tasks[0]['completed'] == False
+     
+     def test_remove_task():
+         todo = TodoList()
+         todo.add_task("운동하기")
+         todo.remove_task(0)
+         assert len(todo.get_tasks()) == 0
+     
+     def test_complete_task():
+         todo = TodoList()
+         todo.add_task("독서하기")
+         todo.complete_task(0)
+         tasks = todo.get_tasks()
+         assert tasks[0]['completed'] == True
+     
+     def test_get_pending_tasks():
+         todo = TodoList()
+         todo.add_task("요리하기")
+         todo.add_task("청소하기")
+         todo.complete_task(0)
+         pending = todo.get_pending_tasks()
+         assert len(pending) == 1
+         assert pending[0]['task'] == "청소하기"
+     
+     def test_get_completed_tasks():
+         todo = TodoList()
+         todo.add_task("영화보기")
+         todo.complete_task(0)
+         completed = todo.get_completed_tasks()
+         assert len(completed) == 1
+         assert completed[0]['completed'] == True
+     
+     def test_invalid_index_remove():
+         todo = TodoList()
+         with pytest.raises(IndexError):
+             todo.remove_task(0)
+     
+     def test_invalid_index_complete():
+         todo = TodoList()
+         with pytest.raises(IndexError):
+             todo.complete_task(0)
+     
+     def test_encouragement_message():
+         todo = TodoList()
+         message = todo.get_encouragement()
+         assert isinstance(message, str)
+         assert len(message) > 0
+     ```
+     
+     테오님, 이 스펙에 맞춰서 `TodoList` 클래스를 구현해주세요!
+
+  [16:31:10] [테오]
+     형, 투두 리스트 앱 개발 완료했어!
+     `todo_app.py` 파일에 `TodoList` 클래스 구현했고, 형이 말한 모든 메서드 다 넣었어.
+     테스트 케이스도 통과할 거야. 확인해봐.
+     
+     ```python
+     # todo_app.py
+     
+     class TodoList:
+         """
+         할 일 목록을 관리하는 클래스입니다.
+         할 일 추가, 삭제, 완료 처리 및 상태별 조회 기능을 제공합니다.
+         """
+         def __init__(self):
+             self.tasks = []
+             # 응원 메시지는 여기에
+             self.encouragement_message = "오늘도 멋진 하루! 계획대로 착착 진행될 거야!"
+     
+         def _check_index(self, index):
+             """
+             인덱스가 유효한 범위 내에 있는지 확인하는 헬퍼 메서드.
+             """
+             if not (0 <= index < len(self.tasks)):
+                 raise IndexError("Task index out of range.")
+     
+         def add_task(self, task):
+             """
+             새로운 할 일을 추가합니다.
+             """
+             self.tasks.append({'task': task, 'completed': False})
+     
+         def remove_task(self, index):
+             """
+             지정된 인덱스의 할 일을 삭제합니다.
+             """
+             self._check_index(index)
+             del self.tasks[index]
+     
+         def complete_task(self, index):
+             """
+             지정된 인덱스의 할 일을 완료 처리합니다.
+             """
+             self._check_index(index)
+             self.tasks[index]['completed'] = True
+     
+         def get_tasks(self):
+             """
+             전체 할 일 목록을 반환합니다. (얕은 복사본 반환)
+             """
+             return self.tasks[:]
+     
+         def get_pending_tasks(self):
+             """
+             미완료된 할 일 목록을 반환합니다.
+             """
+             return [task for task in self.tasks if not task['completed']]
+     
+         def get_completed_tasks(self):
+             """
+             완료된 할 일 목록을 반환합니다.
+             """
+             return [task for task in self.tasks if task['completed']]
+     
+         def get_encouragement(self):
+             """
+             응원 메시지를 반환합니다.
+             """
+             return self.encouragement_message
+     ```
+     📁 파일: C:\Users\uu445\projects\duo-chat\shiro_company\output\todo_app.py
+
+  [16:31:17] [소라]
+     테오님, 완벽합니다! 🎉
+     
+     모든 테스트가 통과했어요. 코드도 깔끔하게 잘 작성하셨네요.
+     - 에러 처리도 제대로 되어 있고
+     - 응원 메시지도 따뜻하게 잘 넣으셨어요
+     - 주석도 친절하게 달아주셨고요
+     
+     누나가 보시면 분명 만족하실 것 같아요!
+
+============================================================
+  ✅ 누나! 다 했어요!
+  📦 결과물: shiro_company/output/todo_app.py
+  📋 로그: C:\Users\uu445\projects\duo-chat\shiro_company\logs\task_20260312_163049.log
+============================================================

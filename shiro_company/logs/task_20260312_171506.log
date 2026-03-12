@@ -1,0 +1,94 @@
+
+============================================================
+  실시간 대화 로그
+============================================================
+
+  [17:15:14] [소라]
+     [FILE:daily_gift_generator.py]
+     
+     테오님, 파일 생성에 문제가 있는 것 같네요. 
+     
+     일단 간단한 테스트용 코드부터 만들어서 확인해보세요:
+     
+     **파일명**: daily_gift_generator.py
+     
+     ```test
+     import pytest
+     from daily_gift_generator import DailyGiftGenerator
+     
+     def test_file_import():
+         try:
+             generator = DailyGiftGenerator()
+             print("파일 import 성공!")
+             assert True
+         except ImportError as e:
+             print(f"Import 에러: {e}")
+             assert False
+     
+     def test_basic_functionality():
+         generator = DailyGiftGenerator()
+         gift = generator.generate_gift()
+         print(f"생성된 선물: {gift}")
+         assert gift is not None
+     
+     def test_gift_message():
+         generator = DailyGiftGenerator()
+         message = generator.get_gift_message("테스트 선물")
+         print(f"생성된 메시지: {message}")
+         assert "테스트 선물" in message
+     ```
+     
+     먼저 다음을 확인해주세요:
+     1. 현재 작업 디렉토리에 `daily_gift_generator.py` 파일을 직접 저장했나요?
+     2. 파일 확장자가 `.py`로 정확히 되어 있나요?
+     3. 어떤 IDE나 에디터를 사용하고 계신가요?
+     
+     구체적인 에러 메시지를 알려주시면 바로 해결해드릴게요!
+
+  [17:15:20] [테오]
+     형, 제가 보낸 코드를 `daily_gift_generator.py` 파일로 직접 저장해서 사용해야 해. 파일이 없어서 import 에러가 나는 거야. 제가 보낸 코드 블록 내용으로 파일 만들어줘.
+
+  [17:15:27] [소라]
+     아 이해했어요 테오님! 제가 파일을 직접 생성해드릴게요.
+     
+     **daily_gift_generator.py 파일 내용:**
+     
+     ```python
+     import random
+     
+     class DailyGiftGenerator:
+         def __init__(self):
+             self.gifts = {
+                 'food': ["맛있는 케이크", "따뜻한 커피", "수제 쿠키 세트", "제철 과일 바구니", "고급 초콜릿"],
+                 'digital': ["최신 웹툰 구독권", "온라인 영화 스트리밍 이용권", "e-book 상품권", "음악 스트리밍 한 달 이용권", "모바일 게임 아이템"],
+                 'comfort': ["포근한 담요", "아로마 향초", "입욕제 세트", "편안한 수면 안대", "따뜻한 수면 양말"],
+                 'creative': ["DIY 팔찌 만들기 키트", "색연필 드로잉 세트", "미니 화분 키우기", "퍼즐 게임", "컬러링 북"]
+             }
+             self.all_gifts = [gift for category_list in self.gifts.values() for gift in category_list]
+             self.messages = [
+                 "누나, 이거 받으면 기분 좋아질 거야!",
+                 "누나가 좋아할 것 같아서 준비했어.",
+                 "힘내라고 준비한 작은 선물이야.",
+                 "누나 덕분에 나도 힘내! 이거 받아.",
+                 "오늘 하루도 즐겁게 보내길 바라며!",
+                 "항상 고마워 누나, 이거 받고 힘내!"
+             ]
+     
+         def generate_gift(self, category=None):
+             if category and category in self.gifts:
+                 return random.choice(self.gifts[category])
+             else:
+                 return random.choice(self.all_gifts)
+     
+         def get_gift_message(self, gift):
+             message_template = random.choice(self.messages)
+             return f"사랑하는 누나에게: '{gift}'! {message_template}"
+     ```
+     
+     파일이 생성되었어요! 이제 테스트해보세요.
+
+============================================================
+  ✅ 누나! 다 했어요!
+  📦 결과물: shiro_company/output/daily_gift_generator.py
+  📋 로그: C:\Users\uu445\projects\duo-chat\shiro_company\logs\task_20260312_171506.log
+============================================================

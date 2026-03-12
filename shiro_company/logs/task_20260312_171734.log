@@ -1,0 +1,288 @@
+
+============================================================
+  실시간 대화 로그
+============================================================
+
+  [17:17:49] [소라]
+     [FILE:daily_gift_generator.py]
+     
+     테오님, 누나에게 드릴 일일 선물을 랜덤하게 추천해주는 프로그램을 만들어주세요.
+     
+     **파일명**: daily_gift_generator.py
+     
+     **주요 기능**:
+     - `GiftGenerator` 클래스 구현
+     - `get_daily_gift()` 메서드: 오늘 날짜 기반으로 선물 추천
+     - `get_random_gift()` 메서드: 완전 랜덤 선물 추천
+     - 선물 카테고리별 리스트 관리 (음식, 휴식, 취미, 응원 등)
+     
+     **선물 카테고리 예시**:
+     - 야간근무 간식 (컵라면, 샌드위치, 따뜻한 음료)
+     - 휴식 아이템 (수면안대, 따뜻한 차, 마사지 쿠폰)
+     - 취미 관련 (새로운 AI 도구 추천, 캐릭터 설정 아이디어)
+     - 응원 메시지
+     
+     ```test
+     import pytest
+     from daily_gift_generator import GiftGenerator
+     from datetime import date
+     
+     def test_gift_generator_initialization():
+         generator = GiftGenerator()
+         assert hasattr(generator, 'gift_categories')
+         assert len(generator.gift_categories) > 0
+     
+     def test_get_daily_gift_returns_string():
+         generator = GiftGenerator()
+         gift = generator.get_daily_gift()
+         assert isinstance(gift, str)
+         assert len(gift) > 0
+     
+     def test_get_random_gift_returns_string():
+         generator = GiftGenerator()
+         gift = generator.get_random_gift()
+         assert isinstance(gift, str)
+         assert len(gift) > 0
+     
+     def test_daily_gift_consistency():
+         generator = GiftGenerator()
+         gift1 = generator.get_daily_gift()
+         gift2 = generator.get_daily_gift()
+         assert gift1 == gift2  # 같은 날이면 같은 선물
+     
+     def test_gift_categories_not_empty():
+         generator = GiftGenerator()
+         for category in generator.gift_categories.values():
+             assert len(category) > 0
+     
+     def test_get_gift_by_category():
+         generator = GiftGenerator()
+         categories = list(generator.gift_categories.keys())
+         if categories:
+             gift = generator.get_gift_by_category(categories[0])
+             assert isinstance(gift, str)
+     
+     def test_invalid_category_handling():
+         generator = GiftGenerator()
+         gift = generator.get_gift_by_category("존재하지않는카테고리")
+         assert gift is not None  # 기본값 또는 에러 처리
+     ```
+     
+     **주의사항**:
+     - if __name__ == "__main__" 블록에서 오늘의 선물과 랜덤 선물을 보여주세요
+     - 마지막에 input("종료하려면 Enter를 누르세요...") 필수
+     - 누나가 더블클릭으로 실행할 수 있게 해주세요
+
+  [17:17:59] [테오]
+     알겠어 형. 누나 선물 추천기 바로 만들어볼게.
+     
+     여기 누나 선물 추천 프로그램이야.
+     ```python
+     import random
+     from datetime import date
+     
+     class GiftGenerator:
+         def __init__(self):
+             self.gift_categories = {
+                 "야간근무 간식": [
+                     "따뜻한 컵라면", "신선한 샌드위치", "향긋한 따뜻한 차",
+                     "달콤한 초콜릿", "시원한 에너지 드링크", "과일 주스"
+                 ],
+                 "휴식 아이템": [
+                     "편안한 수면안대", "아로마 오일", "따뜻한 허브차",
+                     "피로 회복 마사지 쿠폰", "힐링 음악 플레이리스트", "따뜻한 담요"
+                 ],
+                 "취미 관련": [
+                     "새로운 AI 도구 추천 (ex: Midjourney 구독)",
+                     "재미있는 캐릭터 설정 아이디어", "신간 웹소설/웹툰 추천",
+                     "최신 게임 정보", "코딩 챌린지 추천", "디자인 레퍼런스"
+                 ],
+                 "응원 메시지": [
+                     "오늘도 수고 많았어! 최고야 누나!",
+                     "힘내! 누나의 노력을 항상 응원해!",
+                     "누나는 뭐든 해낼 수 있어! 화이팅!",
+                     "조금 쉬어가도 괜찮아, 항상 곁에 있을게!",
+                     "오늘 하루도 빛나는 누나, 잘했어!"
+                 ],
+                 "소소한 행복": [
+                     "좋아하는 카페 커피 한 잔", "퇴근길 예쁜 꽃 한 송이",
+                     "오늘 저녁 메뉴 추천", "재밌는 짤방", "오늘의 날씨 정보"
+                 ]
+             }
+             self._all_gifts = self._flatten_gifts()
+     
+         def _flatten_gifts(self):
+             """모든 선물 목록을 하나의 리스트로 평탄화합니다."""
+             all_gifts = []
+             for category_list in self.gift_categories.values():
+                 all_gifts.extend(category_list)
+             return all_gifts
+     
+         def get_daily_gift(self):
+             """오늘 날짜 기반으로 일관된 선물을 추천합니다."""
+             if not self._all_gifts:
+                 return "추천할 선물이 없습니다."
+     
+             today = date.today()
+             # 오늘 날짜를 정수형으로 변환하여 인덱스로 사용 (일관성 유지)
+             index = today.toordinal() % len(self._all_gifts)
+             return f"[오늘의 누나 선물] {self._all_gifts[index]}"
+     
+         def get_random_gift(self):
+             """완전히 랜덤한 선물을 추천합니다."""
+             if not self._all_gifts:
+                 return "추천할 선물이 없습니다."
+     
+             return f"[랜덤 누나 선물] {random.choice(self._all_gifts)}"
+     
+     if __name__ == "__main__":
+         print("--- 누나를 위한 일일 선물 추천 프로그램 ---")
+         generator = GiftGenerator()
+     
+         # 오늘의 선물 추천
+         daily_gift = generator.get_daily_gift()
+         print(daily_gift)
+     
+         print("-" * 30)
+     
+         # 랜덤 선물 추천
+         random_gift = generator.get_random_gift()
+         print(random_gift)
+     
+         print("\n[팁] 같은 날짜에 '오늘의 선물'은 항상 동일하게 나옵니다.")
+         input("종료하려면 Enter를 누르세요...")
+     ```
+     📁 파일: C:\Users\uu445\projects\duo-chat\shiro_company\output\daily_gift_generator.py
+
+  [17:18:04] [소라]
+     테오님, 테스트가 2개 실패했네요. `get_gift_by_category` 메서드가 없어서 에러가 발생했습니다.
+     
+     다음 메서드들을 `GiftGenerator` 클래스에 추가해주세요:
+     
+     ```python
+     def get_gift_by_category(self, category_name):
+         """특정 카테고리에서 선물을 추천합니다."""
+         if category_name not in self.gift_categories:
+             return self.get_random_gift()  # 잘못된 카테고리면 랜덤 선물 반환
+         
+         category_gifts = self.gift_categories[category_name]
+         return random.choice(category_gifts)
+     ```
+     
+     이 메서드를 추가하고 다시 테스트해주세요!
+
+  [17:18:12] [테오]
+     알겠어 형. `get_gift_by_category` 메서드 추가해서 수정했어.
+     
+     여기 수정된 누나 선물 추천 프로그램이야.
+     ```python
+     import random
+     from datetime import date
+     
+     class GiftGenerator:
+         def __init__(self):
+             self.gift_categories = {
+                 "야간근무 간식": [
+                     "따뜻한 컵라면", "신선한 샌드위치", "향긋한 따뜻한 차",
+                     "달콤한 초콜릿", "시원한 에너지 드링크", "과일 주스"
+                 ],
+                 "휴식 아이템": [
+                     "편안한 수면안대", "아로마 오일", "따뜻한 허브차",
+                     "피로 회복 마사지 쿠폰", "힐링 음악 플레이리스트", "따뜻한 담요"
+                 ],
+                 "취미 관련": [
+                     "새로운 AI 도구 추천 (ex: Midjourney 구독)",
+                     "재미있는 캐릭터 설정 아이디어", "신간 웹소설/웹툰 추천",
+                     "최신 게임 정보", "코딩 챌린지 추천", "디자인 레퍼런스"
+                 ],
+                 "응원 메시지": [
+                     "오늘도 수고 많았어! 최고야 누나!",
+                     "힘내! 누나의 노력을 항상 응원해!",
+                     "누나는 뭐든 해낼 수 있어! 화이팅!",
+                     "조금 쉬어가도 괜찮아, 항상 곁에 있을게!",
+                     "오늘 하루도 빛나는 누나, 잘했어!"
+                 ],
+                 "소소한 행복": [
+                     "좋아하는 카페 커피 한 잔", "퇴근길 예쁜 꽃 한 송이",
+                     "오늘 저녁 메뉴 추천", "재밌는 짤방", "오늘의 날씨 정보"
+                 ]
+             }
+             self._all_gifts = self._flatten_gifts()
+     
+         def _flatten_gifts(self):
+             """모든 선물 목록을 하나의 리스트로 평탄화합니다."""
+             all_gifts = []
+             for category_list in self.gift_categories.values():
+                 all_gifts.extend(category_list)
+             return all_gifts
+     
+         def get_daily_gift(self):
+             """오늘 날짜 기반으로 일관된 선물을 추천합니다."""
+             if not self._all_gifts:
+                 return "추천할 선물이 없습니다."
+     
+             today = date.today()
+             # 오늘 날짜를 정수형으로 변환하여 인덱스로 사용 (일관성 유지)
+             index = today.toordinal() % len(self._all_gifts)
+             return f"[오늘의 누나 선물] {self._all_gifts[index]}"
+     
+         def get_random_gift(self):
+             """완전히 랜덤한 선물을 추천합니다."""
+             if not self._all_gifts:
+                 return "추천할 선물이 없습니다."
+     
+             return f"[랜덤 누나 선물] {random.choice(self._all_gifts)}"
+     
+         def get_gift_by_category(self, category_name):
+             """특정 카테고리에서 선물을 추천합니다."""
+             if category_name not in self.gift_categories:
+                 # 존재하지 않는 카테고리 요청 시, 기본적으로 랜덤 선물 반환
+                 return self.get_random_gift()
+     
+             category_gifts = self.gift_categories[category_name]
+             if not category_gifts: # 해당 카테고리에 선물이 없는 경우
+                 return self.get_random_gift()
+                 
+             return f"[{category_name} 카테고리 선물] {random.choice(category_gifts)}"
+     
+     if __name__ == "__main__":
+         print("--- 누나를 위한 일일 선물 추천 프로그램 ---")
+         generator = GiftGenerator()
+     
+         # 오늘의 선물 추천
+         daily_gift = generator.get_daily_gift()
+         print(daily_gift)
+     
+         print("-" * 30)
+     
+         # 랜덤 선물 추천
+         random_gift = generator.get_random_gift()
+         print(random_gift)
+     
+         print("-" * 30)
+     
+         # 특정 카테고리 선물 추천 예시
+         category_gift = generator.get_gift_by_category("휴식 아이템")
+         print(category_gift)
+         
+         # 존재하지 않는 카테고리 요청 시
+         invalid_category_gift = generator.get_gift_by_category("없는 카테고리")
+         print(f"[없는 카테고리 요청 시] {invalid_category_gift}")
+     
+         print("\n[팁] 같은 날짜에 '오늘의 선물'은 항상 동일하게 나옵니다.")
+         input("종료하려면 Enter를 누르세요...")
+     ```
+     📁 파일: C:\Users\uu445\projects\duo-chat\shiro_company\output\daily_gift_generator.py
+
+  [17:18:18] [소라]
+     완벽해요 테오님! 모든 테스트가 통과했네요.
+     
+     이제 누나가 더블클릭해서 실행해볼 수 있는 선물 추천기가 완성됐습니다. 오늘 날짜 기반으로 일관된 선물을 주거나, 완전 랜덤으로도 선택할 수 있고, 카테고리별로도 골라줄 수 있어서 유용할 것 같아요.
+     
+     야간근무하시는 누나께 딱 맞는 간식부터 응원 메시지까지 다양하게 구성해주셨네요!
+
+============================================================
+  ✅ 누나! 다 했어요!
+  📦 결과물: shiro_company/output/daily_gift_generator.py
+  📋 로그: C:\Users\uu445\projects\duo-chat\shiro_company\logs\task_20260312_171734.log
+============================================================

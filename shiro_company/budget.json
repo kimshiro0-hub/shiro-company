@@ -1,0 +1,107 @@
+{
+  "month": "2026-03",
+  "budget_usd": 5.0,
+  "spent_usd": 0.118221,
+  "remaining_usd": 4.881779,
+  "calls": [
+    {
+      "time": "2026-03-12 18:04:37",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1277,
+      "output_tokens": 599,
+      "cost_usd": 0.012816,
+      "task": "간단한 계산기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:04:43",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 740,
+      "output_tokens": 604,
+      "cost_usd": 0.0,
+      "task": "간단한 계산기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:04:49",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 3364,
+      "output_tokens": 200,
+      "cost_usd": 0.013092,
+      "task": "간단한 계산기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:14:02",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1465,
+      "output_tokens": 34,
+      "cost_usd": 0.004905,
+      "task": "[AUTO] 태스크 결정"
+    },
+    {
+      "time": "2026-03-12 18:14:15",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1538,
+      "output_tokens": 967,
+      "cost_usd": 0.019119,
+      "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:14:31",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 795,
+      "output_tokens": 1623,
+      "cost_usd": 0.0,
+      "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:14:38",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 4042,
+      "output_tokens": 270,
+      "cost_usd": 0.016176,
+      "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:14:55",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 3662,
+      "output_tokens": 2016,
+      "cost_usd": 0.0,
+      "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:15:01",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 6709,
+      "output_tokens": 187,
+      "cost_usd": 0.022932,
+      "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:15:20",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 7003,
+      "output_tokens": 1821,
+      "cost_usd": 0.0,
+      "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 18:15:26",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 8842,
+      "output_tokens": 177,
+      "cost_usd": 0.029181,
+      "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    }
+  ]
+}

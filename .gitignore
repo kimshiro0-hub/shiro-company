@@ -1,0 +1,15 @@
+# 환경 설정
+.env
+__pycache__/
+*.pyc
+
+# 런타임 파일
+*.lock
+task_board.json
+
+# 이전 버전 파일 (v1)
+chat.py
+shared.py
+sora.py
+teo.py
+messages.json
