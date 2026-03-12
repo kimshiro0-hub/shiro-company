@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시로 컴퍼니 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    background: #0f0f17;
+    color: #e0e0e0;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 24px;
+  }
+
+  /* 요약 카드 */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .card .value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #60a5fa;
+  }
+  .card .label {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 4px;
+  }
+  .card.warn .value { color: #f59e0b; }
+  .card.good .value { color: #34d399; }
+
+  /* 섹션 */
+  .section {
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .section h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: #a78bfa;
+  }
+
+  /* 차트 그리드 */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 700px) {
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+  .chart-box {
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .chart-box h3 {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  canvas { max-height: 220px; }
+
+  /* 게이지바 */
+  .gauge {
+    background: #2a2a3e;
+    border-radius: 8px;
+    height: 28px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .gauge-fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    transition: width 0.5s;
+  }
+
+  /* 테이블 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #2a2a3e;
+    font-size: 0.85rem;
+  }
+  th { color: #888; font-weight: 500; }
+  code {
+    background: #2a2a3e;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+
+  /* CEO 한줄평 */
+  .ceo-quote {
+    background: #1e1b4b;
+    border-left: 3px solid #a78bfa;
+    padding: 16px;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .ceo-quote .author {
+    margin-top: 8px;
+    font-style: normal;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  /* placeholder */
+  .placeholder {
+    text-align: center;
+    padding: 32px;
+    color: #555;
+    font-size: 0.9rem;
+  }
+
+  .noscript-fallback { display: none; }
+</style>
+</head>
+<body>
+
+<h1>시로 컴퍼니 대시보드</h1>
+<p class="subtitle">2026-03 | 생성: 2026-03-12 10:40</p>
+
+<!-- 요약 카드 -->
+<div class="cards">
+  <div class="card">
+    <div class="value">$5.00</div>
+    <div class="label">월 예산</div>
+  </div>
+  <div class="card warn">
+    <div class="value">$0.7673</div>
+    <div class="label">사용액</div>
+  </div>
+  <div class="card good">
+    <div class="value">$4.2327</div>
+    <div class="label">잔액</div>
+  </div>
+  <div class="card">
+    <div class="value">35</div>
+    <div class="label">총 API 호출</div>
+  </div>
+</div>
+
+<!-- 투자 트랙 -->
+<div class="section">
+  <h2>📈 투자 트랙</h2>
+  <div class="placeholder">투자 모듈 준비 중</div>
+</div>
+
+<!-- 운영 트랙: 차트 -->
+<div class="chart-grid">
+  <div class="chart-box">
+    <h3>에이전트별 호출 비율</h3>
+    <canvas id="agentChart"></canvas>
+    <noscript><div class="noscript-fallback">소라: 20회 | 테오: 15회</div></noscript>
+  </div>
+  <div class="chart-box">
+    <h3>일별 비용 추이</h3>
+    <canvas id="dailyChart"></canvas>
+    <noscript><div class="noscript-fallback">Chart.js 필요</div></noscript>
+  </div>
+</div>
+
+<!-- 예산 잔액 게이지 -->
+<div class="section">
+  <h2>💰 예산 잔액</h2>
+  <div class="gauge">
+    <div class="gauge-fill" style="width:84.7%;background:#34d399">
+      84.7%
+    </div>
+  </div>
+  <p style="text-align:right;font-size:0.75rem;color:#888;margin-top:4px">$4.2327 / $5.00</p>
+</div>
+
+<!-- 산출물 갤러리 -->
+<div class="section">
+  <h2>📦 산출물 갤러리</h2>
+  <table>
+    <thead>
+      <tr><th>파일</th><th>생성일</th><th>크기</th><th>비용</th></tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td><code>calculator.py</code></td>
+          <td>2026-03-12 10:34</td>
+          <td>2,058 B</td>
+          <td>$0.0000</td>
+        </tr>
+        <tr>
+          <td><code>claude_token_tracker.py</code></td>
+          <td>2026-03-12 10:34</td>
+          <td>5,950 B</td>
+          <td>$0.0000</td>
+        </tr>
+        <tr>
+          <td><code>night_shift_tracker.py</code></td>
+          <td>2026-03-12 10:34</td>
+          <td>10,430 B</td>
+          <td>$0.0000</td>
+        </tr>
+        <tr>
+          <td><code>novelai_prompt_manager.py</code></td>
+          <td>2026-03-12 10:40</td>
+          <td>11,205 B</td>
+          <td>$0.0000</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CEO 한줄평 -->
+<div class="section">
+  <h2>🔵 소라의 마지막 코멘트</h2>
+  <div class="ceo-quote">
+    테오님, 완벽해요! 모든 테스트 통과했습니다.
+    <div class="author">— 소라 (PM)</div>
+  </div>
+</div>
+
+<script>
+// 오프라인 체크 — Chart.js 없으면 텍스트 폴백
+if (typeof Chart === 'undefined') {
+  document.querySelectorAll('canvas').forEach(c => {
+    const p = document.createElement('p');
+    p.style.cssText = 'text-align:center;color:#555;padding:20px';
+    p.textContent = '오프라인 — Chart.js를 로드할 수 없어요';
+    c.parentNode.replaceChild(p, c);
+  });
+} else {
+  // 도넛 차트: 에이전트별 호출
+  new Chart(document.getElementById('agentChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['소라 (Claude)', '테오 (Gemini)'],
+      datasets: [{
+        data: [20, 15],
+        backgroundColor: ['#60a5fa', '#34d399'],
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#ccc', font: { size: 11 } } }
+      }
+    }
+  });
+
+  // 라인 차트: 일별 비용
+  new Chart(document.getElementById('dailyChart'), {
+    type: 'line',
+    data: {
+      labels: ["2026-03-12"],
+      datasets: [{
+        label: '비용 ($)',
+        data: [0.7673],
+        borderColor: '#a78bfa',
+        backgroundColor: 'rgba(167,139,250,0.1)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: '#a78bfa',
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: { ticks: { color: '#888' }, grid: { color: '#2a2a3e' } },
+        y: { ticks: { color: '#888', callback: v => '$'+v.toFixed(3) }, grid: { color: '#2a2a3e' } }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+}
+</script>
+
+</body>
+</html>
