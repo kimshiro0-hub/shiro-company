@@ -1,8 +1,8 @@
 {
   "month": "2026-03",
   "budget_usd": 5.0,
-  "spent_usd": 0.118221,
-  "remaining_usd": 4.881779,
+  "spent_usd": 0.76734,
+  "remaining_usd": 4.23266,
   "calls": [
     {
       "time": "2026-03-12 18:04:37",
@@ -102,6 +102,222 @@
       "output_tokens": 177,
       "cost_usd": 0.029181,
       "task": "편의점 야간근무 중 Claude 토큰 사용량 추적기 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:34:58",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1465,
+      "output_tokens": 28,
+      "cost_usd": 0.004815,
+      "task": "[AUTO] 태스크 결정"
+    },
+    {
+      "time": "2026-03-12 10:35:13",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1526,
+      "output_tokens": 1092,
+      "cost_usd": 0.020958,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:35:37",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 717,
+      "output_tokens": 2776,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:35:43",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 4166,
+      "output_tokens": 246,
+      "cost_usd": 0.016188,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:36:21",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 4646,
+      "output_tokens": 2180,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:36:25",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 6771,
+      "output_tokens": 159,
+      "cost_usd": 0.022698,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:36:38",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 8096,
+      "output_tokens": 3056,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:36:44",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 9079,
+      "output_tokens": 304,
+      "cost_usd": 0.031797,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:37:00",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 12480,
+      "output_tokens": 3066,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:37:07",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 11626,
+      "output_tokens": 382,
+      "cost_usd": 0.040608,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:37:21",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 17068,
+      "output_tokens": 1046,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:37:29",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 14361,
+      "output_tokens": 465,
+      "cost_usd": 0.050058,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:37:52",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 19807,
+      "output_tokens": 2934,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:38:02",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 17335,
+      "output_tokens": 870,
+      "cost_usd": 0.065055,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:38:20",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 24089,
+      "output_tokens": 3030,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:38:24",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 20717,
+      "output_tokens": 159,
+      "cost_usd": 0.064536,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:38:55",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 24758,
+      "output_tokens": 3065,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:39:01",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 23141,
+      "output_tokens": 239,
+      "cost_usd": 0.073008,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:39:19",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 25641,
+      "output_tokens": 2557,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:39:30",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 22823,
+      "output_tokens": 904,
+      "cost_usd": 0.082029,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:39:53",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 25477,
+      "output_tokens": 3026,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:40:07",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 23675,
+      "output_tokens": 1118,
+      "cost_usd": 0.087795,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:40:29",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 25965,
+      "output_tokens": 2952,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 10:40:40",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 25408,
+      "output_tokens": 890,
+      "cost_usd": 0.089574,
+      "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
     }
   ]
 }
