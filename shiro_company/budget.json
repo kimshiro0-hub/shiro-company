@@ -1,8 +1,8 @@
 {
   "month": "2026-03",
   "budget_usd": 5.0,
-  "spent_usd": 0.76734,
-  "remaining_usd": 4.23266,
+  "spent_usd": 0.82722,
+  "remaining_usd": 4.17278,
   "calls": [
     {
       "time": "2026-03-12 18:04:37",
@@ -318,6 +318,60 @@
       "output_tokens": 890,
       "cost_usd": 0.089574,
       "task": "NovelAI 프롬프트 템플릿 관리자 만들어줘"
+    },
+    {
+      "time": "2026-03-12 23:27:38",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1465,
+      "output_tokens": 26,
+      "cost_usd": 0.004785,
+      "task": "[AUTO] 태스크 결정"
+    },
+    {
+      "time": "2026-03-12 23:27:52",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1522,
+      "output_tokens": 904,
+      "cost_usd": 0.018126,
+      "task": "NovelAI 프롬프트 최적화 도구 만들어줘"
+    },
+    {
+      "time": "2026-03-12 23:28:26",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 742,
+      "output_tokens": 1052,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 최적화 도구 만들어줘"
+    },
+    {
+      "time": "2026-03-12 23:28:31",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 3926,
+      "output_tokens": 194,
+      "cost_usd": 0.014688,
+      "task": "NovelAI 프롬프트 최적화 도구 만들어줘"
+    },
+    {
+      "time": "2026-03-12 23:28:57",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 2923,
+      "output_tokens": 1748,
+      "cost_usd": 0.0,
+      "task": "NovelAI 프롬프트 최적화 도구 만들어줘"
+    },
+    {
+      "time": "2026-03-12 23:29:03",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 6342,
+      "output_tokens": 217,
+      "cost_usd": 0.022281,
+      "task": "NovelAI 프롬프트 최적화 도구 만들어줘"
     }
   ]
 }
