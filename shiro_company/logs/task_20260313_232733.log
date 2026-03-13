@@ -1,0 +1,725 @@
+
+============================================================
+  실시간 대화 로그
+============================================================
+
+  💡 소라가 결정한 태스크: 편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘
+
+  [23:27:46] [소라]
+     [FILE:novelai_prompt_generator.py]
+     
+     테오님, 누나를 위한 NovelAI 프롬프트 생성기를 만들어주세요.
+     
+     **파일명**: novelai_prompt_generator.py
+     
+     **주요 기능**:
+     - 캐릭터 설정 (성별, 나이, 외모, 성격)
+     - 배경/상황 설정 (장소, 시간, 분위기)
+     - 스타일 태그 (화풍, 품질 태그)
+     - 네거티브 프롬프트 자동 추가
+     - 생성된 프롬프트 클립보드 복사 기능
+     - 프롬프트 히스토리 저장
+     
+     **필수 규칙**:
+     - if __name__ == "__main__" 블록에 데모 실행
+     - 마지막에 input("종료하려면 Enter를 누르세요...") 추가
+     - 간단한 메뉴 방식으로 구성
+     
+     ```test
+     import pytest
+     from novelai_prompt_generator import NovelAIPromptGenerator
+     
+     def test_character_generation():
+         generator = NovelAIPromptGenerator()
+         character = generator.generate_character()
+         assert isinstance(character, str)
+         assert len(character) > 0
+     
+     def test_background_generation():
+         generator = NovelAIPromptGenerator()
+         background = generator.generate_background()
+         assert isinstance(background, str)
+         assert len(background) > 0
+     
+     def test_style_tags():
+         generator = NovelAIPromptGenerator()
+         style = generator.get_style_tags()
+         assert isinstance(style, str)
+         assert "masterpiece" in style.lower()
+     
+     def test_negative_prompt():
+         generator = NovelAIPromptGenerator()
+         negative = generator.get_negative_prompt()
+         assert isinstance(negative, str)
+         assert len(negative) > 0
+     
+     def test_full_prompt_generation():
+         generator = NovelAIPromptGenerator()
+         prompt = generator.generate_full_prompt()
+         assert isinstance(prompt, dict)
+         assert "positive" in prompt
+         assert "negative" in prompt
+     
+     def test_prompt_combination():
+         generator = NovelAIPromptGenerator()
+         parts = ["1girl", "school uniform", "classroom"]
+         combined = generator.combine_prompt_parts(parts)
+         assert isinstance(combined, str)
+         assert all(part in combined for part in parts)
+     
+     def test_random_element_selection():
+         generator = NovelAIPromptGenerator()
+         elements = ["a", "b", "c"]
+         selected = generator.select_random_elements(elements, 2)
+         assert len(selected) == 2
+         assert all(elem in elements for elem in selected)
+     ```
+
+  [23:28:09] [테오]
+     오케이 형, 누나 프롬프트 생성기 만들어봤어. 야간근무 짬짬이 만든 거라 일단 기본 기능 넣었어.
+     
+     누나를 위한 NovelAI 프롬프트 생성기 파일이야.
+     ```python
+     import random
+     import sys
+     try:
+         import pyperclip
+         CLIPBOARD_AVAILABLE = True
+     except ImportError:
+         CLIPBOARD_AVAILABLE = False
+         print("경고: pyperclip 모듈이 설치되어 있지 않습니다. 클립보드 복사 기능이 비활성화됩니다.")
+         print("클립보드 기능을 사용하려면 'pip install pyperclip'을 실행해주세요.")
+     
+     class NovelAIPromptGenerator:
+         def __init__(self):
+             self.history = []
+             self.character_genders = ["female", "male", "androgynous"]
+             self.character_ages = ["young", "teenager", "adult", "elderly"]
+             self.character_appearances = [
+                 "long hair", "short hair", "braids", "ponytail", "blue eyes", "red eyes", "green eyes",
+                 "glasses", "scarf", "hat", "dress", "suit", "casual clothes", "uniform",
+                 "muscular build", "slim figure", "curvy", "petite", "tall", "short"
+             ]
+             self.character_personalities = [
+                 "shy", "confident", "energetic", "calm", "mysterious", "cheerful", "serious",
+                 "playful", "elegant", "determined", "dreamy"
+             ]
+     
+             self.background_places = [
+                 "forest", "city street", "beach", "futuristic laboratory", "cozy cafe",
+                 "ancient temple", "moonlit garden", "spaceship interior", "mountain peak",
+                 "underwater city", "desert outpost", "magical academy"
+             ]
+             self.background_times = [
+                 "daytime", "night", "sunrise", "sunset", "twilight", "rainy day", "snowy evening"
+             ]
+             self.background_atmospheres = [
+                 "peaceful", "chaotic", "mysterious", "romantic", "adventurous", "melancholy",
+                 "vibrant", "eerie", "futuristic", "fantasy"
+             ]
+     
+             self.style_tags = [
+                 "masterpiece", "best quality", "high quality", "ultra detailed",
+                 "absurdres", "intricate details", "highly detailed", "dynamic lighting",
+                 "sharp focus", "volumetric lighting", "photorealistic", "cinematic lighting",
+                 "vivid colors", "pastel colors", "monochromatic", "digital art", "illustration",
+                 "anime style", "manga style", "oil painting", "watercolor"
+             ]
+     
+             self.negative_prompt_base = [
+                 "lowres", "bad anatomy", "bad hands", "text", "error", "missing fingers",
+                 "extra digit", "fewer digits", "cropped", "worst quality", "low quality",
+                 "normal quality", "jpeg artifacts", "signature", "watermark", "username",
+                 "blurry", "out of focus", "(bad-artist:1.2)", "(bad_prompt:1.2)", "mutation",
+                 "deformed", "ugly", "disfigured"
+             ]
+     
+         def _select_random_items(self, items, min_count=1, max_count=3):
+             """Helper to select random unique items from a list."""
+             count = random.randint(min_count, min(max_count, len(items)))
+             return random.sample(items, count)
+     
+         def generate_character(self):
+             gender = random.choice(self.character_genders)
+             age = random.choice(self.character_ages)
+             appearances = self._select_random_items(self.character_appearances, min_count=2, max_count=4)
+             personalities = self._select_random_items(self.character_personalities, min_count=1, max_count=2)
+             
+             character_parts = [gender, age] + appearances + personalities
+             return ", ".join(character_parts)
+     
+         def generate_background(self):
+             place = random.choice(self.background_places)
+             time = random.choice(self.background_times)
+             atmospheres = self._select_random_items(self.background_atmospheres, min_count=1, max_count=2)
+             
+             background_parts = [place, time] + atmospheres
+             return ", ".join(background_parts)
+     
+         def get_style_tags(self):
+             """Returns a string of common style tags."""
+             selected_styles = self._select_random_items(self.style_tags, min_count=4, max_count=7)
+             return ", ".join(selected_styles)
+     
+         def get_negative_prompt(self):
+             """Returns a predefined string of negative prompts."""
+             return ", ".join(self.negative_prompt_base)
+     
+         def generate_full_prompt(self):
+             char_prompt = self.generate_character()
+             bg_prompt = self.generate_background()
+             style_prompt = self.get_style_tags()
+             
+             positive_parts = [char_prompt, bg_prompt, style_prompt]
+             positive_prompt = ", ".join(filter(None, positive_parts)) # filter(None) removes empty strings
+             
+             negative_prompt = self.get_negative_prompt()
+             
+             return {
+                 "positive": positive_prompt,
+                 "negative": negative_prompt
+             }
+     
+         def copy_to_clipboard(self, text):
+             if CLIPBOARD_AVAILABLE:
+                 try:
+                     pyperclip.copy(text)
+                     print("프롬프트가 클립보드에 복사되었습니다!")
+                 except pyperclip.PyperclipException as e:
+                     print(f"클립보드 복사 실패: {e}")
+             else:
+                 print("pyperclip 모듈이 설치되어 있지 않아 클립보드 복사 기능을 사용할 수 없습니다.")
+     
+         def save_to_history(self, prompt_data):
+             self.history.append(prompt_data)
+             print("프롬프트가 히스토리에 저장되었습니다.")
+     
+         def show_history(self):
+             if not self.history:
+                 print("저장된 프롬프트가 없습니다.")
+                 return
+     
+             print("\n--- 프롬프트 히스토리 ---")
+             for i, prompt in enumerate(self.history):
+                 print(f"\n[{i+1}]")
+                 print(f"  긍정 프롬프트: {prompt['positive']}")
+                 print(f"  부정 프롬프트: {prompt['negative']}")
+             print("-------------------------\n")
+     
+         def display_menu(self):
+             print("\n--- NovelAI 프롬프트 생성기 ---")
+             print("1. 캐릭터 프롬프트 생성")
+             print("2. 배경/상황 프롬프트 생성")
+             print("3. 전체 프롬프트 생성 (캐릭터 + 배경 + 스타일 + 부정)")
+             print("4. 히스토리 보기")
+             print("5. 종료")
+             print("-------------------------------")
+     
+         def run(self):
+             while True:
+                 self.display_menu()
+                 choice = input("메뉴를 선택하세요: ").strip()
+     
+                 if choice == '1':
+                     char_prompt = self.generate_character()
+                     print(f"\n생성된 캐릭터 프롬프트:\n{char_prompt}\n")
+                     if input("클립보드에 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(char_prompt)
+                     
+                 elif choice == '2':
+                     bg_prompt = self.generate_background()
+                     print(f"\n생성된 배경/상황 프롬프트:\n{bg_prompt}\n")
+                     if input("클립보드에 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(bg_prompt)
+     
+                 elif choice == '3':
+                     full_prompt = self.generate_full_prompt()
+                     print("\n--- 생성된 전체 프롬프트 ---")
+                     print(f"긍정 프롬프트: {full_prompt['positive']}")
+                     print(f"부정 프롬프트: {full_prompt['negative']}")
+                     print("----------------------------\n")
+                     
+                     if input("클립보드에 긍정 프롬프트를 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(full_prompt['positive'])
+                     
+                     if input("이 프롬프트를 히스토리에 저장하시겠습니까? (y/n): ").lower() == 'y':
+                         self.save_to_history(full_prompt)
+     
+                 elif choice == '4':
+                     self.show_history()
+     
+                 elif choice == '5':
+                     print("프롬프트 생성기를 종료합니다.")
+                     break
+                 else:
+                     print("잘못된 선택입니다. 다시 시도해주세요.")
+     
+     
+     if __name__ == "__main__":
+         generator = NovelAIPromptGenerator()
+         generator.run()
+         input("종료하려면 Enter를 누르세요...")
+     ```
+     📁 파일: /home/runner/work/shiro-company/shiro-company/shiro_company/output/novelai_prompt_generator.py
+
+  [23:28:14] [소라]
+     테오님, 테스트에서 2개 실패했네요.
+     
+     **문제점**:
+     1. `combine_prompt_parts` 메소드가 없음
+     2. `select_random_elements` 메소드가 없음
+     
+     **수정 요청**:
+     NovelAIPromptGenerator 클래스에 이 두 메소드를 추가해주세요:
+     
+     ```python
+     def combine_prompt_parts(self, parts):
+         return ", ".join(parts)
+     
+     def select_random_elements(self, elements, count):
+         return random.sample(elements, min(count, len(elements)))
+     ```
+     
+     이 메소드들을 클래스에 추가하고 다시 제출해주세요.
+
+  [23:28:26] [테오]
+     형, 테스트 실패한 부분 수정했어. 말씀하신 메소드들 추가하고 기존 코드에 반영했어.
+     
+     누나를 위한 NovelAI 프롬프트 생성기 파일 업데이트야.
+     ```python
+     import random
+     import sys
+     try:
+         import pyperclip
+         CLIPBOARD_AVAILABLE = True
+     except ImportError:
+         CLIPBOARD_AVAILABLE = False
+         print("경고: pyperclip 모듈이 설치되어 있지 않습니다. 클립보드 복사 기능이 비활성화됩니다.")
+         print("클립보드 기능을 사용하려면 'pip install pyperclip'을 실행해주세요.")
+     
+     class NovelAIPromptGenerator:
+         def __init__(self):
+             self.history = []
+             self.character_genders = ["female", "male", "androgynous"]
+             self.character_ages = ["young", "teenager", "adult", "elderly"]
+             self.character_appearances = [
+                 "long hair", "short hair", "braids", "ponytail", "blue eyes", "red eyes", "green eyes",
+                 "glasses", "scarf", "hat", "dress", "suit", "casual clothes", "uniform",
+                 "muscular build", "slim figure", "curvy", "petite", "tall", "short"
+             ]
+             self.character_personalities = [
+                 "shy", "confident", "energetic", "calm", "mysterious", "cheerful", "serious",
+                 "playful", "elegant", "determined", "dreamy"
+             ]
+     
+             self.background_places = [
+                 "forest", "city street", "beach", "futuristic laboratory", "cozy cafe",
+                 "ancient temple", "moonlit garden", "spaceship interior", "mountain peak",
+                 "underwater city", "desert outpost", "magical academy"
+             ]
+             self.background_times = [
+                 "daytime", "night", "sunrise", "sunset", "twilight", "rainy day", "snowy evening"
+             ]
+             self.background_atmospheres = [
+                 "peaceful", "chaotic", "mysterious", "romantic", "adventurous", "melancholy",
+                 "vibrant", "eerie", "futuristic", "fantasy"
+             ]
+     
+             self.style_tags = [
+                 "masterpiece", "best quality", "high quality", "ultra detailed",
+                 "absurdres", "intricate details", "highly detailed", "dynamic lighting",
+                 "sharp focus", "volumetric lighting", "photorealistic", "cinematic lighting",
+                 "vivid colors", "pastel colors", "monochromatic", "digital art", "illustration",
+                 "anime style", "manga style", "oil painting", "watercolor"
+             ]
+     
+             self.negative_prompt_base = [
+                 "lowres", "bad anatomy", "bad hands", "text", "error", "missing fingers",
+                 "extra digit", "fewer digits", "cropped", "worst quality", "low quality",
+                 "normal quality", "jpeg artifacts", "signature", "watermark", "username",
+                 "blurry", "out of focus", "(bad-artist:1.2)", "(bad_prompt:1.2)", "mutation",
+                 "deformed", "ugly", "disfigured"
+             ]
+     
+         def combine_prompt_parts(self, parts):
+             """Combines a list of prompt parts into a single string."""
+             return ", ".join(filter(None, parts)) # filter(None) removes empty strings
+     
+         def select_random_elements(self, elements, count):
+             """Selects a specified number of random unique elements from a list."""
+             return random.sample(elements, min(count, len(elements)))
+     
+         def generate_character(self):
+             gender = random.choice(self.character_genders)
+             age = random.choice(self.character_ages)
+             
+             # Using select_random_elements with random counts for flexibility
+             appearances_count = random.randint(2, min(4, len(self.character_appearances)))
+             appearances = self.select_random_elements(self.character_appearances, appearances_count)
+             
+             personalities_count = random.randint(1, min(2, len(self.character_personalities)))
+             personalities = self.select_random_elements(self.character_personalities, personalities_count)
+             
+             character_parts = [gender, age] + appearances + personalities
+             return self.combine_prompt_parts(character_parts)
+     
+         def generate_background(self):
+             place = random.choice(self.background_places)
+             time = random.choice(self.background_times)
+             
+             atmospheres_count = random.randint(1, min(2, len(self.background_atmospheres)))
+             atmospheres = self.select_random_elements(self.background_atmospheres, atmospheres_count)
+             
+             background_parts = [place, time] + atmospheres
+             return self.combine_prompt_parts(background_parts)
+     
+         def get_style_tags(self):
+             """Returns a string of common style tags."""
+             style_count = random.randint(4, min(7, len(self.style_tags)))
+             selected_styles = self.select_random_elements(self.style_tags, style_count)
+             return self.combine_prompt_parts(selected_styles)
+     
+         def get_negative_prompt(self):
+             """Returns a predefined string of negative prompts."""
+             return self.combine_prompt_parts(self.negative_prompt_base)
+     
+         def generate_full_prompt(self):
+             char_prompt = self.generate_character()
+             bg_prompt = self.generate_background()
+             style_prompt = self.get_style_tags()
+             
+             positive_parts = [char_prompt, bg_prompt, style_prompt]
+             positive_prompt = self.combine_prompt_parts(positive_parts)
+             
+             negative_prompt = self.get_negative_prompt()
+             
+             return {
+                 "positive": positive_prompt,
+                 "negative": negative_prompt
+             }
+     
+         def copy_to_clipboard(self, text):
+             if CLIPBOARD_AVAILABLE:
+                 try:
+                     pyperclip.copy(text)
+                     print("프롬프트가 클립보드에 복사되었습니다!")
+                 except pyperclip.PyperclipException as e:
+                     print(f"클립보드 복사 실패: {e}")
+             else:
+                 print("pyperclip 모듈이 설치되어 있지 않아 클립보드 복사 기능을 사용할 수 없습니다.")
+     
+         def save_to_history(self, prompt_data):
+             self.history.append(prompt_data)
+             print("프롬프트가 히스토리에 저장되었습니다.")
+     
+         def show_history(self):
+             if not self.history:
+                 print("저장된 프롬프트가 없습니다.")
+                 return
+     
+             print("\n--- 프롬프트 히스토리 ---")
+             for i, prompt in enumerate(self.history):
+                 print(f"\n[{i+1}]")
+                 print(f"  긍정 프롬프트: {prompt['positive']}")
+                 print(f"  부정 프롬프트: {prompt['negative']}")
+             print("-------------------------\n")
+     
+         def display_menu(self):
+             print("\n--- NovelAI 프롬프트 생성기 ---")
+             print("1. 캐릭터 프롬프트 생성")
+             print("2. 배경/상황 프롬프트 생성")
+             print("3. 전체 프롬프트 생성 (캐릭터 + 배경 + 스타일 + 부정)")
+             print("4. 히스토리 보기")
+             print("5. 종료")
+             print("-------------------------------")
+     
+         def run(self):
+             while True:
+                 self.display_menu()
+                 choice = input("메뉴를 선택하세요: ").strip()
+     
+                 if choice == '1':
+                     char_prompt = self.generate_character()
+                     print(f"\n생성된 캐릭터 프롬프트:\n{char_prompt}\n")
+                     if input("클립보드에 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(char_prompt)
+                     
+                 elif choice == '2':
+                     bg_prompt = self.generate_background()
+                     print(f"\n생성된 배경/상황 프롬프트:\n{bg_prompt}\n")
+                     if input("클립보드에 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(bg_prompt)
+     
+                 elif choice == '3':
+                     full_prompt = self.generate_full_prompt()
+                     print("\n--- 생성된 전체 프롬프트 ---")
+                     print(f"긍정 프롬프트: {full_prompt['positive']}")
+                     print(f"부정 프롬프트: {full_prompt['negative']}")
+                     print("----------------------------\n")
+                     
+                     if input("클립보드에 긍정 프롬프트를 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(full_prompt['positive'])
+                     
+                     if input("이 프롬프트를 히스토리에 저장하시겠습니까? (y/n): ").lower() == 'y':
+                         self.save_to_history(full_prompt)
+     
+                 elif choice == '4':
+                     self.show_history()
+     
+                 elif choice == '5':
+                     print("프롬프트 생성기를 종료합니다.")
+                     break
+                 else:
+                     print("잘못된 선택입니다. 다시 시도해주세요.")
+     
+     
+     if __name__ == "__main__":
+         generator = NovelAIPromptGenerator()
+         generator.run()
+         input("종료하려면 Enter를 누르세요...")
+     ```
+     📁 파일: /home/runner/work/shiro-company/shiro-company/shiro_company/output/novelai_prompt_generator.py
+
+  [23:28:32] [소라]
+     테오님, 거의 다 됐는데 `test_style_tags`가 실패했네요.
+     
+     **문제점**: 
+     `get_style_tags()` 결과에 "masterpiece"가 포함되어야 하는데 없음
+     
+     **수정 요청**:
+     `self.style_tags` 리스트에 "masterpiece"를 추가해주세요. NovelAI에서 필수 품질 태그니까요.
+     
+     ```python
+     self.style_tags = [
+         "masterpiece", "best quality", "high resolution", "detailed",
+         # ... 기존 태그들
+     ]
+     ```
+     
+     이것만 수정하면 모든 테스트 통과할 거예요.
+
+  [23:28:49] [테오]
+     형, `get_style_tags`에서 "masterpiece"가 항상 포함되도록 수정했고, 형이 말한 품질 태그들도 `style_tags` 리스트에 추가했어.
+     
+     누나를 위한 NovelAI 프롬프트 생성기 파일 업데이트야.
+     ```python
+     import random
+     import sys
+     try:
+         import pyperclip
+         CLIPBOARD_AVAILABLE = True
+     except ImportError:
+         CLIPBOARD_AVAILABLE = False
+         print("경고: pyperclip 모듈이 설치되어 있지 않습니다. 클립보드 복사 기능이 비활성화됩니다.")
+         print("클립보드 기능을 사용하려면 'pip install pyperclip'을 실행해주세요.")
+     
+     class NovelAIPromptGenerator:
+         def __init__(self):
+             self.history = []
+             self.character_genders = ["female", "male", "androgynous"]
+             self.character_ages = ["young", "teenager", "adult", "elderly"]
+             self.character_appearances = [
+                 "long hair", "short hair", "braids", "ponytail", "blue eyes", "red eyes", "green eyes",
+                 "glasses", "scarf", "hat", "dress", "suit", "casual clothes", "uniform",
+                 "muscular build", "slim figure", "curvy", "petite", "tall", "short"
+             ]
+             self.character_personalities = [
+                 "shy", "confident", "energetic", "calm", "mysterious", "cheerful", "serious",
+                 "playful", "elegant", "determined", "dreamy"
+             ]
+     
+             self.background_places = [
+                 "forest", "city street", "beach", "futuristic laboratory", "cozy cafe",
+                 "ancient temple", "moonlit garden", "spaceship interior", "mountain peak",
+                 "underwater city", "desert outpost", "magical academy"
+             ]
+             self.background_times = [
+                 "daytime", "night", "sunrise", "sunset", "twilight", "rainy day", "snowy evening"
+             ]
+             self.background_atmospheres = [
+                 "peaceful", "chaotic", "mysterious", "romantic", "adventurous", "melancholy",
+                 "vibrant", "eerie", "futuristic", "fantasy"
+             ]
+     
+             # Sora 형의 요청에 따라 'high resolution', 'detailed' 추가 및 정리
+             self.style_tags = [
+                 "masterpiece", "best quality", "high quality", "ultra detailed", 
+                 "high resolution", "detailed", "absurdres", "intricate details", 
+                 "highly detailed", "dynamic lighting", "sharp focus", "volumetric lighting", 
+                 "photorealistic", "cinematic lighting", "vivid colors", "pastel colors", 
+                 "monochromatic", "digital art", "illustration", "anime style", "manga style", 
+                 "oil painting", "watercolor"
+             ]
+     
+             self.negative_prompt_base = [
+                 "lowres", "bad anatomy", "bad hands", "text", "error", "missing fingers",
+                 "extra digit", "fewer digits", "cropped", "worst quality", "low quality",
+                 "normal quality", "jpeg artifacts", "signature", "watermark", "username",
+                 "blurry", "out of focus", "(bad-artist:1.2)", "(bad_prompt:1.2)", "mutation",
+                 "deformed", "ugly", "disfigured"
+             ]
+     
+         def combine_prompt_parts(self, parts):
+             """Combines a list of prompt parts into a single string."""
+             return ", ".join(filter(None, parts)) # filter(None) removes empty strings
+     
+         def select_random_elements(self, elements, count):
+             """Selects a specified number of random unique elements from a list."""
+             return random.sample(elements, min(count, len(elements)))
+     
+         def generate_character(self):
+             gender = random.choice(self.character_genders)
+             age = random.choice(self.character_ages)
+             
+             # Using select_random_elements with random counts for flexibility
+             appearances_count = random.randint(2, min(4, len(self.character_appearances)))
+             appearances = self.select_random_elements(self.character_appearances, appearances_count)
+             
+             personalities_count = random.randint(1, min(2, len(self.character_personalities)))
+             personalities = self.select_random_elements(self.character_personalities, personalities_count)
+             
+             character_parts = [gender, age] + appearances + personalities
+             return self.combine_prompt_parts(character_parts)
+     
+         def generate_background(self):
+             place = random.choice(self.background_places)
+             time = random.choice(self.background_times)
+             
+             atmospheres_count = random.randint(1, min(2, len(self.background_atmospheres)))
+             atmospheres = self.select_random_elements(self.background_atmospheres, atmospheres_count)
+             
+             background_parts = [place, time] + atmospheres
+             return self.combine_prompt_parts(background_parts)
+     
+         def get_style_tags(self):
+             """Returns a string of common style tags, ensuring 'masterpiece' is always included."""
+             
+             # 'masterpiece'는 항상 포함되도록 보장
+             guaranteed_tags = ["masterpiece"]
+             
+             # 'masterpiece'를 제외한 태그 풀에서 추가 태그 선택
+             pool_for_random = [tag for tag in self.style_tags if tag != "masterpiece"]
+             
+             # 전체 태그 수는 4~7개. 'masterpiece'가 1개 있으니 3~6개를 추가로 선택
+             num_additional_tags = random.randint(3, min(6, len(pool_for_random)))
+             
+             additional_selected_tags = self.select_random_elements(pool_for_random, num_additional_tags)
+             
+             final_tags = guaranteed_tags + additional_selected_tags
+             random.shuffle(final_tags) # 태그 순서를 무작위로 섞음
+             
+             return self.combine_prompt_parts(final_tags)
+     
+         def get_negative_prompt(self):
+             """Returns a predefined string of negative prompts."""
+             return self.combine_prompt_parts(self.negative_prompt_base)
+     
+         def generate_full_prompt(self):
+             char_prompt = self.generate_character()
+             bg_prompt = self.generate_background()
+             style_prompt = self.get_style_tags()
+             
+             positive_parts = [char_prompt, bg_prompt, style_prompt]
+             positive_prompt = self.combine_prompt_parts(positive_parts)
+             
+             negative_prompt = self.get_negative_prompt()
+             
+             return {
+                 "positive": positive_prompt,
+                 "negative": negative_prompt
+             }
+     
+         def copy_to_clipboard(self, text):
+             if CLIPBOARD_AVAILABLE:
+                 try:
+                     pyperclip.copy(text)
+                     print("프롬프트가 클립보드에 복사되었습니다!")
+                 except pyperclip.PyperclipException as e:
+                     print(f"클립보드 복사 실패: {e}")
+             else:
+                 print("pyperclip 모듈이 설치되어 있지 않아 클립보드 복사 기능을 사용할 수 없습니다.")
+     
+         def save_to_history(self, prompt_data):
+             self.history.append(prompt_data)
+             print("프롬프트가 히스토리에 저장되었습니다.")
+     
+         def show_history(self):
+             if not self.history:
+                 print("저장된 프롬프트가 없습니다.")
+                 return
+     
+             print("\n--- 프롬프트 히스토리 ---")
+             for i, prompt in enumerate(self.history):
+                 print(f"\n[{i+1}]")
+                 print(f"  긍정 프롬프트: {prompt['positive']}")
+                 print(f"  부정 프롬프트: {prompt['negative']}")
+             print("-------------------------\n")
+     
+         def display_menu(self):
+             print("\n--- NovelAI 프롬프트 생성기 ---")
+             print("1. 캐릭터 프롬프트 생성")
+             print("2. 배경/상황 프롬프트 생성")
+             print("3. 전체 프롬프트 생성 (캐릭터 + 배경 + 스타일 + 부정)")
+             print("4. 히스토리 보기")
+             print("5. 종료")
+             print("-------------------------------")
+     
+         def run(self):
+             while True:
+                 self.display_menu()
+                 choice = input("메뉴를 선택하세요: ").strip()
+     
+                 if choice == '1':
+                     char_prompt = self.generate_character()
+                     print(f"\n생성된 캐릭터 프롬프트:\n{char_prompt}\n")
+                     if input("클립보드에 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(char_prompt)
+                     
+                 elif choice == '2':
+                     bg_prompt = self.generate_background()
+                     print(f"\n생성된 배경/상황 프롬프트:\n{bg_prompt}\n")
+                     if input("클립보드에 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(bg_prompt)
+     
+                 elif choice == '3':
+                     full_prompt = self.generate_full_prompt()
+                     print("\n--- 생성된 전체 프롬프트 ---")
+                     print(f"긍정 프롬프트: {full_prompt['positive']}")
+                     print(f"부정 프롬프트: {full_prompt['negative']}")
+                     print("----------------------------\n")
+                     
+                     if input("클립보드에 긍정 프롬프트를 복사하시겠습니까? (y/n): ").lower() == 'y':
+                         self.copy_to_clipboard(full_prompt['positive'])
+                     
+                     if input("이 프롬프트를 히스토리에 저장하시겠습니까? (y/n): ").lower() == 'y':
+                         self.save_to_history(full_prompt)
+     
+                 elif choice == '4':
+                     self.show_history()
+     
+                 elif choice == '5':
+                     print("프롬프트 생성기를 종료합니다.")
+                     break
+                 else:
+                     print("잘못된 선택입니다. 다시 시도해주세요.")
+     
+     
+     if __name__ == "__main__":
+         generator = NovelAIPromptGenerator()
+         generator.run()
+         input("종료하려면 Enter를 누르세요...")
+     ```
+     📁 파일: /home/runner/work/shiro-company/shiro-company/shiro_company/output/novelai_prompt_generator.py
+
+  [23:28:53] [소라]
+     완벽해요 테오님! 모든 테스트 통과했네요.
+     
+     누나가 편의점 야간근무 중에 간편하게 사용할 수 있는 NovelAI 프롬프트 생성기가 완성됐어요. 클립보드 복사 기능도 있고, 히스토리도 저장되고, 메뉴 방식으로 쉽게 조작할 수 있어서 누나가 만족하실 것 같아요.
+     
+     수고했습니다!
+
+============================================================
+  ✅ 누나! 다 했어요!
+  📦 결과물: shiro_company/output/novelai_prompt_generator.py
+  📋 로그: /home/runner/work/shiro-company/shiro-company/shiro_company/logs/task_20260313_232733.log
+============================================================

@@ -1,8 +1,8 @@
 {
   "month": "2026-03",
   "budget_usd": 5.0,
-  "spent_usd": 0.82722,
-  "remaining_usd": 4.17278,
+  "spent_usd": 0.910359,
+  "remaining_usd": 4.089641,
   "calls": [
     {
       "time": "2026-03-12 18:04:37",
@@ -372,6 +372,78 @@
       "output_tokens": 217,
       "cost_usd": 0.022281,
       "task": "NovelAI 프롬프트 최적화 도구 만들어줘"
+    },
+    {
+      "time": "2026-03-13 23:27:35",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1465,
+      "output_tokens": 41,
+      "cost_usd": 0.00501,
+      "task": "[AUTO] 태스크 결정"
+    },
+    {
+      "time": "2026-03-13 23:27:46",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 1552,
+      "output_tokens": 716,
+      "cost_usd": 0.015396,
+      "task": "편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘"
+    },
+    {
+      "time": "2026-03-13 23:28:09",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 729,
+      "output_tokens": 2143,
+      "cost_usd": 0.0,
+      "task": "편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘"
+    },
+    {
+      "time": "2026-03-13 23:28:14",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 3763,
+      "output_tokens": 192,
+      "cost_usd": 0.014169,
+      "task": "편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘"
+    },
+    {
+      "time": "2026-03-13 23:28:26",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 3999,
+      "output_tokens": 2258,
+      "cost_usd": 0.0,
+      "task": "편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘"
+    },
+    {
+      "time": "2026-03-13 23:28:32",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 6201,
+      "output_tokens": 196,
+      "cost_usd": 0.021543,
+      "task": "편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘"
+    },
+    {
+      "time": "2026-03-13 23:28:49",
+      "agent": "teo",
+      "model": "gemini-2.5-flash",
+      "input_tokens": 7494,
+      "output_tokens": 2472,
+      "cost_usd": 0.0,
+      "task": "편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘"
+    },
+    {
+      "time": "2026-03-13 23:28:53",
+      "agent": "sora",
+      "model": "claude-sonnet-4-20250514",
+      "input_tokens": 8187,
+      "output_tokens": 164,
+      "cost_usd": 0.027021,
+      "task": "편의점 야간근무 중 틈틈이 NovelAI 프롬프트 생성기 만들어줘"
     }
   ]
 }
